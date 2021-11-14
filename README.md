@@ -3,7 +3,7 @@
 ## Table of Contents
 
 * [Instructions](#instructions)
-* [First step](#first)
+* [First step](#first-step)
 
 ## Instructions
 
