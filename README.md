@@ -3,8 +3,12 @@
 ## Table of Contents
 
 * [Instructions](#instructions)
+<<<<<<< HEAD
 * [Create Navbar](#create-navbar)
 * [Js Manipulation](#js-mainpulation)
+=======
+* [First step](#first-step)
+>>>>>>> fbde0ca4a00427344f676f2d2411b1966472d647
 
 ## Instructions
 
