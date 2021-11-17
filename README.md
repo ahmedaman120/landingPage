@@ -5,6 +5,7 @@
 * [Instructions](#instructions)
 * [Create Navbar](#create-navbar)
 * [Js Manipulation](#js-mainpulation)
+* [Sections Navigation](#sections-navigation)
 
 ## Instructions
 
@@ -66,3 +67,7 @@ BODY
 ```
 as we see there is `HEADER` that will manipulate alone with `document.getElementsByClassName` and then add it to array that contain `section` objects that will manipulate with `document.querySelectorAll`.
  
+
+## Sections Navigation
+
+in this part of landing page we face some issues because js has no explicit function to detect what user see in the page thus so we will built some function to calculate where all sections lie from the viewport to make this I will use `offsetTop` attribute to find this to feed scroll event with them to check if the user arrive to section or not.

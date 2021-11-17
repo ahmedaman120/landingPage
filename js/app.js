@@ -67,6 +67,17 @@ function addIdToSection(id, ele) {
 function containId(ele) {
     return ele.id != '';
 }
+
+
+
+function getBoundingOfEachSection(sections, type) {
+    let topOfEachSection = [];
+    for (let section of sections) {
+        topOfEachSection.push(section.getBoundingClientRect()[type]);
+    }
+    return topOfEachSection;
+
+}
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -80,16 +91,48 @@ function containId(ele) {
 let fragment = document.createDocumentFragment();
 let navBarParent = document.getElementById('navbar__list');
 let sections = document.getElementsByTagName('section');
-let idList = []
+let mainBody = document.getElementsByTagName('main')[0];
+let idList = [];
+let style = (document.getElementsByClassName('landing__container')[0].currentStyle ||
+    window.getComputedStyle(document.getElementsByClassName('landing__container')[0]));
+const padding = parseInt(style.paddingTop);
+
+//initialize tops of the sections 
+//this variable will use with scroll event to add active class.
+
 Array.prototype.forEach.call(sections, (section) => {
     const id = section.id;
     const headerOfSection = section.firstElementChild.childNodes[1].textContent;
-    fragment.appendChild(createNavElement(headerOfSection, id))
+    fragment.appendChild(createNavElement(headerOfSection, id));
 });
 
 navBarParent.appendChild(fragment);
 
 
+const sectionsHeight = getBoundingOfEachSection(sections, 'height');
+
+window.addEventListener('scroll', (ev) => {
+    /**
+     * the main idea I think about it is getting the boundary of 
+     * using getBoundingOfEachSection function and organize
+     * the values bottoms and tops must change while scrolling
+     * to calculate if the user arrive to section or not 
+     * expect Heights it's constant to make sure the user
+     * still in the section or not . 
+     */
+    let sectionsBottoms = getBoundingOfEachSection(sections, 'bottom');
+    let sectionsTops = getBoundingOfEachSection(sections, 'top');
+    for (let index in sectionsTops) {
+        let c = sectionsTops[index] - window.screenY
+        if (c <= 9 && c >= (sectionsHeight[index] - padding) * -1) {
+
+            console.log("must added");
+            document.querySelectorAll('#navbar__list li .menu__link')[index].classList.add('active');
+        } else {
+            document.querySelectorAll('#navbar__list li .menu__link')[index].classList.remove('active');
+        }
+    }
+});
 // Add class 'active' to section when near top of viewport
 
 
