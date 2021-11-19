@@ -137,7 +137,6 @@ for (let i in navBarParent.children) {
 
     navBarParent.children[i].addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('test good');
         window.scrollTo({
             //the offset Top is the constant the pxs from viewport and the section .
             top: sections[i].offsetTop,
