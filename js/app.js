@@ -21,11 +21,6 @@
  */
 
 /**
- * Comments should be present at the beginning of each procedure and class.
- * Great to have comments before crucial code sections within the procedure.
- */
-
-/**
  * Define Global Variables
  * 
  */
@@ -51,7 +46,7 @@ function createNavElement(name, anchorRel) {
     let liElement = document.createElement('li');
     let linkElemetn = document.createElement('a');
     linkElemetn.classList.add('menu__link');
-    linkElemetn.href = "#".concat(anchorRel);
+    // linkElemetn.href = "#".concat(anchorRel);
     linkElemetn.textContent = name;
     liElement.appendChild(linkElemetn);
     return liElement;
@@ -111,6 +106,7 @@ navBarParent.appendChild(fragment);
 
 const sectionsHeight = getBoundingOfEachSection(sections, 'height');
 
+
 window.addEventListener('scroll', (ev) => {
     /**
      * the main idea I think about it is getting the boundary of 
@@ -120,33 +116,33 @@ window.addEventListener('scroll', (ev) => {
      * expect Heights it's constant to make sure the user
      * still in the section or not . 
      */
-    let sectionsBottoms = getBoundingOfEachSection(sections, 'bottom');
     let sectionsTops = getBoundingOfEachSection(sections, 'top');
     for (let index in sectionsTops) {
         let c = sectionsTops[index] - window.screenY
         if (c <= 9 && c >= (sectionsHeight[index] - padding) * -1) {
 
-            console.log("must added");
+            // Add class 'active' to section when near top of viewport
             document.querySelectorAll('#navbar__list li .menu__link')[index].classList.add('active');
         } else {
             document.querySelectorAll('#navbar__list li .menu__link')[index].classList.remove('active');
         }
     }
 });
-// Add class 'active' to section when near top of viewport
 
 
 // Scroll to anchor ID using scrollTO event
+//in this section I will prevent the default actiont of section while clicking
+const leftOfSections = getBoundingOfEachSection(sections, 'left')
+for (let i in navBarParent.children) {
 
-
-/**
- * End Main Functions
- * Begin Events
- * 
- */
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
+    navBarParent.children[i].addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('test good');
+        window.scrollTo({
+            //the offset Top is the constant the pxs from viewport and the section .
+            top: sections[i].offsetTop,
+            left: leftOfSections[i],
+            behavior: 'smooth'
+        });
+    });
+}
