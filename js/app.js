@@ -24,7 +24,19 @@
  * Define Global Variables
  * 
  */
+let fragment = document.createDocumentFragment();
+let navBarParent = document.getElementById('navbar__list');
+let sections = document.getElementsByTagName('section');
+let mainBody = document.getElementsByTagName('main')[0];
+let idList = [];
 
+
+//those variable will use in scroll event function
+let style = (document.getElementsByClassName('landing__container')[0].currentStyle ||
+    window.getComputedStyle(document.getElementsByClassName('landing__container')[0]));
+const padding = parseInt(style.paddingTop);
+const sectionsHeight = getBoundingOfEachSection(sections, 'height');
+const leftOfSections = getBoundingOfEachSection(sections, 'left');
 
 /**
  * End Global Variables
@@ -73,6 +85,13 @@ function getBoundingOfEachSection(sections, type) {
     return topOfEachSection;
 
 }
+
+
+function createSection(section) {
+    const id = section.id;
+    const headerOfSection = section.firstElementChild.childNodes[1].textContent;
+    fragment.appendChild(createNavElement(headerOfSection, id));
+}
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -83,28 +102,16 @@ function getBoundingOfEachSection(sections, type) {
 /**
  * first find the number of sections in page
  */
-let fragment = document.createDocumentFragment();
-let navBarParent = document.getElementById('navbar__list');
-let sections = document.getElementsByTagName('section');
-let mainBody = document.getElementsByTagName('main')[0];
-let idList = [];
-let style = (document.getElementsByClassName('landing__container')[0].currentStyle ||
-    window.getComputedStyle(document.getElementsByClassName('landing__container')[0]));
-const padding = parseInt(style.paddingTop);
+
+
 
 //initialize tops of the sections 
 //this variable will use with scroll event to add active class.
 
-Array.prototype.forEach.call(sections, (section) => {
-    const id = section.id;
-    const headerOfSection = section.firstElementChild.childNodes[1].textContent;
-    fragment.appendChild(createNavElement(headerOfSection, id));
-});
+Array.prototype.forEach.call(sections, createSection);
 
 navBarParent.appendChild(fragment);
-
-
-const sectionsHeight = getBoundingOfEachSection(sections, 'height');
+//End of creating Navbar
 
 
 window.addEventListener('scroll', (ev) => {
@@ -119,12 +126,14 @@ window.addEventListener('scroll', (ev) => {
     let sectionsTops = getBoundingOfEachSection(sections, 'top');
     for (let index in sectionsTops) {
         let c = sectionsTops[index] - window.screenY
-        if (c <= 9 && c >= (sectionsHeight[index] - padding) * -1) {
+        if (c <= 9 && c >= (sectionsHeight[index] + padding) * -1) {
 
             // Add class 'active' to section when near top of viewport
-            document.querySelectorAll('#navbar__list li .menu__link')[index].classList.add('active');
+            // document.querySelectorAll('#navbar__list li .menu__link')[index].classList.add('active');
+            sections[index].classList.add('active');
         } else {
-            document.querySelectorAll('#navbar__list li .menu__link')[index].classList.remove('active');
+            // document.querySelectorAll('#navbar__list li .menu__link')[index].classList.remove('active');
+            sections[index].classList.remove('active');
         }
     }
 });
@@ -132,9 +141,7 @@ window.addEventListener('scroll', (ev) => {
 
 // Scroll to anchor ID using scrollTO event
 //in this section I will prevent the default actiont of section while clicking
-const leftOfSections = getBoundingOfEachSection(sections, 'left')
-for (let i in navBarParent.children) {
-
+for (let i = 0; i < navBarParent.children.length; i++) {
     navBarParent.children[i].addEventListener('click', function(e) {
         e.preventDefault();
         window.scrollTo({
