@@ -130,10 +130,10 @@ window.addEventListener('scroll', (ev) => {
 
             // Add class 'active' to section when near top of viewport
             // document.querySelectorAll('#navbar__list li .menu__link')[index].classList.add('active');
-            sections[index].classList.add('active');
+            sections[index].classList.add(...['active', 'your-active-class']);
         } else {
             // document.querySelectorAll('#navbar__list li .menu__link')[index].classList.remove('active');
-            sections[index].classList.remove('active');
+            sections[index].classList.remove(...['active', 'your-active-class']);
         }
     }
 });
